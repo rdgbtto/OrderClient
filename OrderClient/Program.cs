@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using OrderClient.Entities;
 using OrderClient.Entities.Enums;
 
@@ -18,18 +19,18 @@ namespace OrderClient
             Client client = new Client(name, email, birthDate);
             Console.WriteLine("Enter order data:");
             OrderStatus status = OrderStatus.Processing;
-            Console.Write("Status: " + status.ToString());
+            Console.WriteLine("Status: " + status.ToString());
             Order order = new Order(DateTime.Now, status, client);
             Console.Write("How many items to this order? ");
             int n = int.Parse(Console.ReadLine());
 
-            for (int i = 1; i < n; i++)
+            for (int i = 1; i <= n; i++)
             {
                 Console.WriteLine($"Enter #{i} item data:");
                 Console.Write("Product name: ");
                 string pName = Console.ReadLine();
                 Console.Write("Product price: ");
-                double pPrice = double.Parse(Console.ReadLine());
+                double pPrice = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
                 Console.Write("Quantity: ");
                 int pQuantity = int.Parse(Console.ReadLine());
                 Product product = new Product(pName, pPrice);
@@ -37,7 +38,10 @@ namespace OrderClient
                 order.AddItem(item);
             }
 
-            Console.WriteLine("----------------------------------------------"); /* EXIBE O RESUMO DO PEDIDO */
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ORDER SUMMARY:");
+            Console.WriteLine(order.OrderSumary());
+            Console.ReadKey();
         }
     }
 }
